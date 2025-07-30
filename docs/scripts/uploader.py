@@ -1,49 +1,81 @@
+import os
+import json
+from datetime import datetime
+
+import requests
 from pytrends.request import TrendReq
-import openai
+from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
-import datetime
-import os
-from dotenv import load_dotenv
+from openai import OpenAI
 
-# 📂 Cargar variables del entorno
+# Cargar variables de entorno del archivo .env (API keys, rutas, etc)
 load_dotenv()
 
-# 🔐 Setear API Key de OpenAI
-openai.api_key = os.getenv("openai-api-key")
-
-# 🔥 Inicializar Firebase
-cred_path = os.getenv("FIREBASE_CREDENTIALS_PATH")
-cred = credentials.Certificate(cred_path)
+# Inicializar Firebase con credenciales almacenadas en .env
+firebase_cred_path = os.getenv("FIREBASE_CREDENTIALS")
+cred = credentials.Certificate(firebase_cred_path)
 firebase_admin.initialize_app(cred)
+
+# Cliente para Firestore (base de datos NoSQL en Firebase)
 db = firestore.client()
 
-# 📈 Obtener tendencias de Google Trends (Argentina)
-pytrends = TrendReq()
-pytrends.build_payload(kw_list=["technology", "health", "business"], geo="AR", timeframe="now 1-d")
-trending = pytrends.trending_searches(pn="argentina")
+# Inicializar pytrends para Google Trends en Estados Unidos
+pytrends = TrendReq(hl='en-US', tz=360)
 
-# 📰 Tomar el primer tema en tendencia o usar uno genérico
-topic = trending.iloc[0, 0] if not trending.empty else "Latest trend"
+# Construir payload para la palabra "news" y periodo 'last 1 day'
+pytrends.build_payload(["news"], cat=0, timeframe='now 1-d', geo='US', gprop='')
 
-# 🤖 Generar artículo con OpenAI
-response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "system", "content": "You are a professional blog writer."},
-        {"role": "user", "content": f"Write a short article (around 200 words) about: {topic}"}
-    ]
+# Obtener búsquedas relacionadas con "news"
+related_queries = pytrends.related_queries()
+
+# Obtener las 10 principales búsquedas relacionadas con "news"
+top_queries = related_queries.get("news", {}).get("top", None)
+if top_queries is not None:
+    trending_topics = top_queries["query"].tolist()
+else:
+    trending_topics = ["No trending topics found"]
+
+print("Temas en tendencia:", trending_topics)
+
+# Configurar cliente OpenAI apuntando al router de Hugging Face con token de HF
+client = OpenAI(
+    base_url="https://router.huggingface.co/v1",
+    api_key=os.getenv("HUGGINGFACE_TOKEN"),
 )
 
-article_text = response.choices[0].message.content
+def generate_article(topic):
+    """
+    Usar modelo de Hugging Face vía OpenAI API compatible para generar
+    un texto corto relacionado con el tema dado.
+    """
+    prompt = f"Write a short informative article about '{topic}'."
 
-# 🗓️ Fecha actual (opcional)
-timestamp = datetime.datetime.now().isoformat()
+    try:
+        # Crear petición de chat completions al modelo Kimi-K2-Instruct
+        response = client.chat.completions.create(
+            model="moonshotai/Kimi-K2-Instruct",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+        )
+        # Extraer el contenido del mensaje generado por la IA
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"Error en Hugging Face: {e}")
+        # En caso de error, devolver texto por defecto
+        return f"Artículo no disponible para '{topic}'."
 
-# 🔄 Subir artículo a Firebase Firestore
-db.collection("article").add({
-    "title": topic,
-    "description": article_text,
-})
+# Recorrer todos los temas en tendencia y generar artículos
+for topic in trending_topics:
+    print(f"Generando artículo para: {topic}")
+    article_text = generate_article(topic)
 
-print(f"✅ Article on '{topic}' uploaded successfully.")
+    # Guardar en Firebase Firestore en la colección 'trending_articles'
+    doc_ref = db.collection("trending_articles").document(topic)
+    doc_ref.set({
+        "title": topic,
+        "description": article_text,
+        "last_updated": datetime.utcnow().isoformat() + "Z"
+    })
+    print(f"Artículo sobre '{topic}' subido a Firebase.")
