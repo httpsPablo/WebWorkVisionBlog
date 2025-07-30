@@ -6,22 +6,26 @@
   <title>WebWorkVision - Blog</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <script src="firebase-load.js"></script>
 </head>
-<body>
+<body id="body">
   <header class="header">
-    <nav class="nav container">
-      <h1 class="logo">WebWorkVision</h1>
-      <ul class="nav-menu">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Sobre Nosotros</a></li>
-        <li><a href="#">Categorías</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-    </nav>
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#" class="nav-logo">WebWorkVision</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+      ☰
+    </button>
+    <ul class="nav-menu" id="nav-menu">
+      <li><a href="#body" class="nav-link">Inicio</a></li>
+      <li><a href="#article-container" class="nav-link">Noticias</a></li>
+      <li><a href="#about" class="nav-link">Sobre Nosotros</a></li>
+      <li><a href="#footer" class="nav-link">Contactanos</a></li>
+    </ul>
+  </div>
+</nav>
+
   </header>
+
 
   <section class="hero container">
     <h2>El Blog para Creadores y Desarrolladores</h2>
@@ -30,51 +34,10 @@
 
   <main class="container main-content">
     <section class="blog-list">
-      <div id="articles-container"></div>
-
-      <article class="post-card">
-        <img src="https://via.placeholder.com/600x350/2ecc71/ffffff?text=Post+1" alt="Post 1" class="post-image" />
-        <div class="post-content">
-          <h3 class="post-title">Cómo automatizar publicaciones en tu blog con Python</h3>
-          <p class="post-excerpt">
-            Aprende a usar scripts para publicar contenido automáticamente y mantener tu blog siempre actualizado.
-          </p>
-        </div>
-      </article>
-
-      <article class="post-card">
-        <img src="https://via.placeholder.com/600x350/27ae60/ffffff?text=Post+2" alt="Post 2" class="post-image" />
-        <div class="post-content">
-          <h3 class="post-title">Tendencias en diseño UI/UX para 2025</h3>
-          <p class="post-excerpt">
-            Descubre las mejores prácticas y novedades para crear experiencias de usuario únicas y modernas.
-          </p>
-        </div>
-      </article>
-
-      <article class="post-card">
-        <img src="https://via.placeholder.com/600x350/16a085/ffffff?text=Post+3" alt="Post 3" class="post-image" />
-        <div class="post-content">
-          <h3 class="post-title">CSS moderno: técnicas para hacer tu web más atractiva</h3>
-          <p class="post-excerpt">
-            Explora cómo usar animaciones, variables CSS y diseño responsivo para mejorar tu sitio web.
-          </p>
-        </div>
-      </article>
+      <div id="article-container"></div>
     </section>
 
     <aside class="sidebar">
-      <div class="categories">
-        <h4>Categorías</h4>
-        <ul>
-          <li><a href="#">Automatización</a></li>
-          <li><a href="#">Diseño</a></li>
-          <li><a href="#">CSS</a></li>
-          <li><a href="#">Python</a></li>
-          <li><a href="#">Tecnología</a></li>
-        </ul>
-      </div>
-
       <div class="popular-posts">
         <h4>Artículos Populares</h4>
         <ul>
@@ -86,16 +49,32 @@
     </aside>
   </main>
 
-  <footer class="footer container">
+<section class="about" id="about">
+  <div class="about-container">
+    <h3 class="about-title">Sobre Nosotros</h3>
+    <p class="about-text">
+      <strong>WebWorkVision</strong> es un blog dedicado a brindarte las últimas <em>noticias</em> y <em>tendencias</em> del momento.
+      Nuestra misión es mantenerte informado con artículos breves, claros y actualizados diariamente.
+    </p>
+    <p class="about-text">
+      Desde <strong>tecnología</strong> hasta <strong>actualidad global</strong>, seleccionamos los temas más relevantes y te los presentamos de forma rápida y accesible.
+    </p>
+    <p class="about-text">
+      Creemos en la <em>información como una herramienta poderosa</em>, por eso trabajamos constantemente para ofrecer contenido de calidad, con un enfoque moderno, dinámico y confiable.
+    </p>
+  </div>
+</section>
+
+  <footer id="footer" class="footer container">
     <nav class="footer-nav">
       <ul>
-        <li><a href="#">Política de privacidad</a></li>
-        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="politica.html">Política de privacidad</a></li>
+        <li><a href="terminos.html">Términos y condiciones</a></li>
       </ul>
     </nav>
 
     <form class="footer-form" action="mailto:webworkvision@gmail.com" method="post" enctype="text/plain">
-      <label for="email">Suscríbete o envíanos un mensaje:</label>
+      <label for="email">envíanos un mensaje:</label>
       <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required />
       <button type="submit">Enviar</button>
     </form>
@@ -104,5 +83,6 @@
       &copy; 2025 WebWorkVision. Todos los derechos reservados.
     </p>
   </footer>
+  <script type="module" src="js/firebase-load.js"></script>
 </body>
 </html>
