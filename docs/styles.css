@@ -1,0 +1,288 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #ffffff 0%, #d6f5d6 100%);
+  color: #1a1a1a; /* texto oscuro para legibilidad */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Contenedor general */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header y navegación */
+.header {
+  background: #ffffff;
+  color: #2ecc71;
+  padding: 1rem 0;
+  box-shadow: 0 2px 6px rgba(46,204,113, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #27ae60;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  color: #2ecc71;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-menu li a:hover {
+  color: #27ae60;
+}
+
+/* Hero */
+.hero {
+  padding: 4rem 0 3rem;
+  text-align: center;
+  color: #2ecc71;
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+/* Main content - Blog y sidebar */
+.main-content {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+/* Blog list */
+.blog-list {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.post-card {
+  background: #f9fff9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(46,204,113,0.15);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.post-card:hover {
+  box-shadow: 0 8px 20px rgba(46,204,113,0.25);
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-content {
+  padding: 1rem 1.2rem;
+}
+
+.post-title {
+  font-size: 1.5rem;
+  color: #27ae60;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.post-title:hover {
+  color: #2ecc71;
+  text-decoration: underline;
+}
+
+.post-excerpt {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Sidebar */
+.sidebar {
+  flex: 1;
+  background: #f1f9f1;
+  border-radius: 8px;
+  padding: 1.5rem 1.2rem;
+  color: #2b5d2b;
+  height: fit-content;
+  box-shadow: 0 3px 10px rgba(46,204,113,0.2);
+}
+
+.categories h4,
+.popular-posts h4 {
+  margin-bottom: 1rem;
+  color: #2ecc71;
+  font-weight: 700;
+  border-bottom: 2px solid #27ae60;
+  padding-bottom: 0.3rem;
+}
+
+.categories ul,
+.popular-posts ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.categories li,
+.popular-posts li {
+  margin-bottom: 0.7rem;
+}
+
+.categories li a,
+.popular-posts li a {
+  color: #2b5d2b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.categories li a:hover,
+.popular-posts li a:hover {
+  color: #27ae60;
+  text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+  background: #e6f2e6;
+  color: #2b5d2b;
+  padding: 2rem 0 1rem;
+  text-align: center;
+  border-top: 1px solid #c6e2c6;
+}
+
+.footer-nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  padding-left: 0;
+}
+
+.footer-nav a {
+  color: #2b5d2b;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+  color: #27ae60;
+  text-decoration: underline;
+}
+
+.footer-form {
+  margin-bottom: 1rem;
+}
+
+.footer-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2b5d2b;
+}
+
+.footer-form input[type="email"] {
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #a3dca3;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  width: 220px;
+  max-width: 90vw;
+  background: #e6f2e6;
+  color: #2b5d2b;
+}
+
+.footer-form input::placeholder {
+  color: #6ca96c;
+}
+
+.footer-form button {
+  background: #2ecc71;
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.footer-form button:hover {
+  background: #27ae60;
+}
+
+/* Copyright */
+.footer p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+  }
+  .sidebar {
+    order: -1;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .nav-menu {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .nav-menu li a {
+    font-size: 1rem;
+  }
+  .footer-form input[type="email"] {
+    width: 100%;
+    margin-bottom: 0.7rem;
+  }
+  .footer-form button {
+    width: 100%;
+  }
+}
