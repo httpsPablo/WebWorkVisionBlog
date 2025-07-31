@@ -27,10 +27,10 @@ pytrends = TrendReq(hl='en-US', tz=360)
 pytrends.build_payload(["news"], cat=0, timeframe='now 1-d', geo='US')
 related_queries = pytrends.related_queries()
 
-# Obtener el top de temas relacionados
+# Obtener el top de temas relacionados, solo 5 primeros
 top_queries = related_queries.get("news", {}).get("top", None)
 if top_queries is not None:
-    trending_topics = top_queries["query"].tolist()
+    trending_topics = top_queries["query"].tolist()[:5]  # Aquí limitamos a top 5
 else:
     trending_topics = ["No trending topics found"]
 
@@ -46,7 +46,62 @@ def generate_article(topic):
     """
     Genera un artículo breve sobre el tema usando el modelo 'moonshotai/Kimi-K2-Instruct'
     """
-    prompt = f"Write an engaging and informative article about the latest news on {topic} of around 200 words."
+    prompt = f"""
+Write a real, recent, and slightly exaggerated informative article about the latest news {topic}, around 250 words
+Format the output as clean and readable HTML, but include only the content section (no <html>, <head>, or <body> tags).
+Use:
+
+- <h2> for the article title 
+
+- <h3> for section subtitles 
+
+- <p> for clear, short paragraphs
+
+- <strong> to bold important words
+
+- Optional <br> tags for spacing
+
+The article should be around 230 words. Make it engaging, well-structured, and suitable for blog use.
+
+Do not include styles or extra metadata. Only return the HTML content...
+example:
+<h2>U.S. Financial System Evolves Rapidly Amid Economic Surprises</h2>
+
+<h3>Economic Growth Exceeds Forecasts</h3>
+
+<p>
+The <strong>U.S. economy</strong> continues to defy expectations. In Q2 2025, GDP surged by a surprising <strong>3%</strong>, driven by strong consumer spending and a booming services sector. Despite ongoing geopolitical tensions and tariff pressures, the American financial engine shows no signs of slowing down. <strong>Wall Street</strong> responded with cautious optimism as investors rebalanced portfolios to favor sectors like tech, energy, and fintech.
+</p>
+
+<h2>Federal Reserve Holds Rates—For Now</h2>
+
+<p>
+The <strong>Federal Reserve</strong>, meanwhile, maintained its key interest rate at 4.25–4.50%, but insiders suggest that a <strong>rate cut</strong> in September is on the table. Inflation, while still present, has begun to cool—particularly in food and housing—which gives the Fed room to maneuver. However, concerns over wage stagnation and a slowing labor market still loom.
+</p>
+
+
+
+<h2>Banking Meets Crypto</h2>
+
+<p>
+In the private sector, major shifts are underway. <strong>JPMorgan Chase</strong> announced a strategic partnership with <strong>Coinbase</strong>, allowing users to convert credit card points directly into <strong>cryptocurrency</strong>. This move marks a new era of cooperation between traditional banking and decentralized finance.
+</p>
+
+
+
+<h2>Fintech Soars</h2>
+
+<p>
+Simultaneously, AI-powered fintech firm <strong>Ramp</strong> secured $500 million in new funding, pushing its valuation to $22.5 billion. It now provides automated financial tools to over 40,000 U.S. companies.
+</p>
+
+
+
+<h2>Looking Ahead</h2>
+
+<p>
+With economic data surprising analysts and financial innovation accelerating, the landscape is changing faster than ever. <strong>Adaptability</strong>, both in policy and technology, will be key to navigating what’s next.
+</p>. """
     try:
         response = client.chat.completions.create(
             model="moonshotai/Kimi-K2-Instruct",
