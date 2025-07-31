@@ -73,11 +73,18 @@
       </ul>
     </nav>
 
-    <form class="footer-form" action="mailto:webworkvision@gmail.com" method="post" enctype="text/plain">
-      <label for="email">send us a message:</label>
-      <input type="email" id="email" name="email" placeholder="your email" required />
-      <button type="submit">send</button>
-    </form>
+<form action="https://formsubmit.co/webworkvision@gmail.com" method="POST">
+  <input type="text" name="name" placeholder="your name" required>
+  <input type="email" name="email" placeholder="your email" required>
+  <textarea name="message" placeholder="your message" required></textarea>
+
+  <!-- Opcional: evitar SPAM -->
+  <input type="hidden" name="_captcha" value="false">
+
+  <!-- Botón de envío -->
+  <button type="submit">send</button>
+</form>
+
 
     <p class="copyright">
       &copy; 2025 WebWorkVision.

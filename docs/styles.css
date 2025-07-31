@@ -407,6 +407,54 @@ body {
 .nav-link:hover {
   color: #0a8f5e;
 }
+form {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f9fff9;
+  border: 1px solid #c6ecc6;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 100, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+form input[type="text"],
+form input[type="email"],
+form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #bde6bd;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 16px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form textarea:focus {
+  border-color: #66cc66;
+  outline: none;
+}
+
+form button {
+  background-color: #66cc66;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+form button:hover {
+  background-color: #55bb55;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
