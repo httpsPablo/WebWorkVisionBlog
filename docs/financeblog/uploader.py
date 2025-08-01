@@ -23,15 +23,15 @@ db = firestore.client()
 pytrends = TrendReq(hl='en-US', tz=360)
 
 # Temas base
-topics_base = ["Inversiones",
-               "Criptomonedas",
-               "Bolsa de valores",
-               "Préstamos",
-               "Seguros",
-               "Hipotecas",
-               "Tarjetas de crédito",
-               "Bancos digitales",
-               "Trading online"]
+topics_base = ["Investments",
+"Cryptocurrencies",
+"Stock Market",
+"Loans",
+"Insurance",
+"Mortgages",
+"Credit Cards",
+"Digital Banks",
+"Online Trading"]
 
 # Obtener temas relacionados desde Google Trends
 trending_topics = []
@@ -46,17 +46,6 @@ for topic in topics_base:
     except Exception as e:
         print(f"Error con el tema '{topic}': {e}")
 
-
-# Obtener los temas más buscados
-trending_topics = []
-for topic in topics_base:
-    top = related.get(topic, {}).get("top", None)
-    if top is not None:
-        trending_topics.extend(top["query"].tolist()[:3])  # Máximo 3 por tema
-
-if not trending_topics:
-    trending_topics = ["No trending topics found"]
-
 print("Temas en tendencia:", trending_topics)
 
 # Inicializar cliente OpenAI con Hugging Face router
@@ -67,7 +56,7 @@ client = OpenAI(
 
 def generate_article(topic):
     prompt = f"""
-Write a recent and informative article about the trending topic "{topic}", around 230 words.
+Write a recent and informative article about the topic "{topic}", around 230 words.
 Format it using HTML elements ONLY in the content section (no head or body tags):
 
 - Use <h2> for the title
