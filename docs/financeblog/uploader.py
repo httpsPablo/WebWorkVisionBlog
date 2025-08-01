@@ -23,7 +23,15 @@ db = firestore.client()
 pytrends = TrendReq(hl='en-US', tz=360)
 
 # Temas base
-topics_base = ["finance", "investing", "stock market investing", "cryptocurrencies", "life insurance", "loans", "trading"]
+topics_base = ["Inversiones",
+               "Criptomonedas",
+               "Bolsa de valores",
+               "Préstamos",
+               "Seguros",
+               "Hipotecas",
+               "Tarjetas de crédito",
+               "Bancos digitales",
+               "Trading online"]
 
 # Obtener temas relacionados desde Google Trends
 trending_topics = []
