@@ -23,11 +23,21 @@ db = firestore.client()
 pytrends = TrendReq(hl='en-US', tz=360)
 
 # Temas base
-topics_base = ["finance", "investing"]
+topics_base = ["finance", "investing", "stock market investing", "cryptocurrencies", "life insurance", "loans", "trading"]
 
 # Obtener temas relacionados desde Google Trends
-pytrends.build_payload(topics_base, cat=0, timeframe='now 1-d', geo='US')
-related = pytrends.related_queries()
+trending_topics = []
+
+for topic in topics_base:
+    try:
+        pytrends.build_payload([topic], cat=0, timeframe='now 1-d', geo='US')
+        related = pytrends.related_queries()
+        top = related.get(topic, {}).get("top", None)
+        if top is not None:
+            trending_topics.extend(top["query"].tolist()[:3])  # Máximo 3 por tema
+    except Exception as e:
+        print(f"Error con el tema '{topic}': {e}")
+
 
 # Obtener los temas más buscados
 trending_topics = []
@@ -57,13 +67,6 @@ Format it using HTML elements ONLY in the content section (no head or body tags)
 - <p> for short, clear paragraphs
 - <strong> to emphasize words
 - Keep it engaging and well-structured for blogs
-
-Example:
-<h2>U.S. Financial System Evolves Rapidly Amid Economic Surprises</h2>
-<h3>Economic Growth Exceeds Forecasts</h3>
-<p>The <strong>U.S. economy</strong> continues to defy expectations...</p>
-<h3>Fintech Soars</h3>
-<p>AI-powered fintech firm <strong>Ramp</strong> secured...</p>
     """.strip()
 
     try:
@@ -76,16 +79,20 @@ Example:
         print(f"Error generando artículo: {e}")
         return f"<p>Error generando artículo sobre '{topic}'</p>"
 
-# Generar artículos y subir a Firebase
+# Generar artículos y subir a Firebase solo si no existen
 for topic in trending_topics:
-    print(f"Generando artículo para: {topic}")
-    article = generate_article(topic)
-
-    doc_ref = db.collection("finance_articles").document(topic.replace(" ", "_"))
-    doc_ref.set({
-        "title": topic,
-        "description": article,
-        "date": firestore.SERVER_TIMESTAMP
-    })
-
-    print(f"Artículo sobre '{topic}' subido a Firebase.")
+    print(f"Verificando si ya existe: {topic}")
+    doc_id = topic.replace(" ", "_").lower()
+    doc_ref = db.collection("finance_articles").document(doc_id)
+    
+    if not doc_ref.get().exists:
+        print(f"Generando artículo para: {topic}")
+        article = generate_article(topic)
+        doc_ref.set({
+            "title": topic,
+            "description": article,
+            "date": firestore.SERVER_TIMESTAMP
+        })
+        print(f"Artículo sobre '{topic}' subido a Firebase.")
+    else:
+        print(f"Ya existe artículo sobre '{topic}', omitido.")

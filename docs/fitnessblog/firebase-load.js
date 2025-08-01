@@ -29,9 +29,9 @@ function slugify(text) {
 }
 
 async function loadArticles() {
-  container.innerHTML = "<p>Cargando artículos...</p>";
+  container.innerHTML = "<p>loading articles...</p>";
   try {
-    const q = query(collection(db, "trending_articles"), orderBy("date", "desc"));
+    const q = query(collection(db, "fitness_articles"), orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
     container.innerHTML = "";
@@ -68,8 +68,8 @@ async function loadArticles() {
       asideList.appendChild(asideItem);
     });
   } catch (error) {
-    console.error("Error al cargar artículos:", error);
-    container.innerHTML = "<p>Error al cargar los artículos.</p>";
+    console.error("Error, no cargaron los articulos", error);
+    container.innerHTML = "<p>Error not loading articles.</p>";
   }
 }
 
